@@ -1,17 +1,3 @@
-/* MPU6050 Basic Example with IMU
- by: Kris Winer
- date: May 10, 2014
- license: Beerware - Use this code however you'd like. If you
- find it useful you can buy me a beer some time.
- 
- modified by: Sebastien Laporte
- date: Sep 23, 2015
- 
- Note: The MPU6050 is an I2C sensor and uses the Arduino Wire library.
- Because the sensor is not 5V tolerant, we are using a 3.3 V 8 MHz Pro Mini or a 3.3 V Teensy 3.1.
- We have disabled the internal pull-ups used by the Wire library in the Wire.h/twi.c utility file.
- We are also using the 400 kHz fast I2C mode by setting the TWI_FREQ  to 400000L /twi.h utility file.
- */
 
 #include <Wire.h>
 #include <Servo.h>
@@ -28,17 +14,6 @@
 #define Ki_Z 10
 #define Kd_Z 10
 
-// Define registers per MPU6050, Register Map and Descriptions, Rev 4.2, 08/19/2013 6 DOF Motion sensor fusion device
-// Invensense Inc., www.invensense.com
-// See also MPU-6050 Register Map and Descriptions, Revision 4.0, RM-MPU-6050A-00, 9/12/2012 for registers not listed in
-// above document; the MPU6050 and MPU 9150 are virtually identical but the latter has an on-board magnetic sensor
-
-#define XGOFFS_TC        0x00 // Bit 7 PWR_MODE, bits 6:1 XG_OFFS_TC, bit 0 OTP_BNK_VLD
-#define YGOFFS_TC        0x01
-#define ZGOFFS_TC        0x02
-#define X_FINE_GAIN      0x03 // [7:0] fine gain
-#define Y_FINE_GAIN      0x04
-#define Z_FINE_GAIN      0x05
 #define XA_OFFSET_H      0x06 // User-defined trim values for accelerometer
 #define XA_OFFSET_L_TC   0x07
 #define YA_OFFSET_H      0x08
@@ -49,8 +24,8 @@
 #define SELF_TEST_Y      0x0E
 #define SELF_TEST_Z      0x0F
 #define SELF_TEST_A      0x10
-#define XG_OFFS_USRH     0x13  // User-defined trim values for gyroscope; supported in MPU-6050?
 #define XG_OFFS_USRL     0x14
+#define XG_OFFS_USRH     0x15
 #define YG_OFFS_USRH     0x15
 #define YG_OFFS_USRL     0x16
 #define ZG_OFFS_USRH     0x17
@@ -59,100 +34,25 @@
 #define CONFIG           0x1A
 #define GYRO_CONFIG      0x1B
 #define ACCEL_CONFIG     0x1C
-#define FF_THR           0x1D  // Free-fall
-#define FF_DUR           0x1E  // Free-fall
-#define MOT_THR          0x1F  // Motion detection threshold bits [7:0]
-#define MOT_DUR          0x20  // Duration counter threshold for motion interrupt generation, 1 kHz rate, LSB = 1 ms
-#define ZMOT_THR         0x21  // Zero-motion detection threshold bits [7:0]
-#define ZRMOT_DUR        0x22  // Duration counter threshold for zero motion interrupt generation, 16 Hz rate, LSB = 64 ms
 #define FIFO_EN          0x23
 #define I2C_MST_CTRL     0x24
-#define I2C_SLV0_ADDR    0x25
-#define I2C_SLV0_REG     0x26
-#define I2C_SLV0_CTRL    0x27
-#define I2C_SLV1_ADDR    0x28
-#define I2C_SLV1_REG     0x29
-#define I2C_SLV1_CTRL    0x2A
-#define I2C_SLV2_ADDR    0x2B
-#define I2C_SLV2_REG     0x2C
-#define I2C_SLV2_CTRL    0x2D
-#define I2C_SLV3_ADDR    0x2E
-#define I2C_SLV3_REG     0x2F
-#define I2C_SLV3_CTRL    0x30
-#define I2C_SLV4_ADDR    0x31
-#define I2C_SLV4_REG     0x32
-#define I2C_SLV4_DO      0x33
-#define I2C_SLV4_CTRL    0x34
-#define I2C_SLV4_DI      0x35
-#define I2C_MST_STATUS   0x36
 #define INT_PIN_CFG      0x37
 #define INT_ENABLE       0x38
-#define DMP_INT_STATUS   0x39  // Check DMP interrupt
 #define INT_STATUS       0x3A
 #define ACCEL_XOUT_H     0x3B
-#define ACCEL_XOUT_L     0x3C
-#define ACCEL_YOUT_H     0x3D
-#define ACCEL_YOUT_L     0x3E
-#define ACCEL_ZOUT_H     0x3F
-#define ACCEL_ZOUT_L     0x40
-#define TEMP_OUT_H       0x41
-#define TEMP_OUT_L       0x42
 #define GYRO_XOUT_H      0x43
-#define GYRO_XOUT_L      0x44
-#define GYRO_YOUT_H      0x45
-#define GYRO_YOUT_L      0x46
-#define GYRO_ZOUT_H      0x47
-#define GYRO_ZOUT_L      0x48
-#define EXT_SENS_DATA_00 0x49
-#define EXT_SENS_DATA_01 0x4A
-#define EXT_SENS_DATA_02 0x4B
-#define EXT_SENS_DATA_03 0x4C
-#define EXT_SENS_DATA_04 0x4D
-#define EXT_SENS_DATA_05 0x4E
-#define EXT_SENS_DATA_06 0x4F
-#define EXT_SENS_DATA_07 0x50
-#define EXT_SENS_DATA_08 0x51
-#define EXT_SENS_DATA_09 0x52
-#define EXT_SENS_DATA_10 0x53
-#define EXT_SENS_DATA_11 0x54
-#define EXT_SENS_DATA_12 0x55
-#define EXT_SENS_DATA_13 0x56
-#define EXT_SENS_DATA_14 0x57
-#define EXT_SENS_DATA_15 0x58
-#define EXT_SENS_DATA_16 0x59
-#define EXT_SENS_DATA_17 0x5A
-#define EXT_SENS_DATA_18 0x5B
-#define EXT_SENS_DATA_19 0x5C
-#define EXT_SENS_DATA_20 0x5D
-#define EXT_SENS_DATA_21 0x5E
-#define EXT_SENS_DATA_22 0x5F
-#define EXT_SENS_DATA_23 0x60
-#define MOT_DETECT_STATUS 0x61
-#define I2C_SLV0_DO      0x63
-#define I2C_SLV1_DO      0x64
-#define I2C_SLV2_DO      0x65
-#define I2C_SLV3_DO      0x66
-#define I2C_MST_DELAY_CTRL 0x67
-#define SIGNAL_PATH_RESET  0x68
-#define MOT_DETECT_CTRL   0x69
+#define TEMP_OUT_H       0x41
 #define USER_CTRL        0x6A  // Bit 7 enable DMP, bit 3 reset DMP
 #define PWR_MGMT_1       0x6B  // Device defaults to the SLEEP mode
 #define PWR_MGMT_2       0x6C
-#define DMP_BANK         0x6D  // Activates a specific bank in the DMP
-#define DMP_RW_PNT       0x6E  // Set read/write pointer to a specific start address in specified DMP bank
-#define DMP_REG          0x6F  // Register in DMP from which to read or to which to write
-#define DMP_REG_1        0x70
-#define DMP_REG_2        0x71
 #define FIFO_COUNTH      0x72
-#define FIFO_COUNTL      0x73
 #define FIFO_R_W         0x74
 #define WHO_AM_I_MPU6050 0x75 // Should return 0x68
+#define MPU6050_ADDRESS  0x68
 
 #define offsetX 95
 #define offsetY 90
 #define offsetZ 100
-
-#define MPU6050_ADDRESS 0x68
 
 #define RAD_TO_DEG 180.0f/PI
 #define DEG_TO_RAD PI/180.0
@@ -172,21 +72,15 @@ enum Gscale {
     GFS_2000DPS
 };
 
-// PID
-int consigneX, erreurX, somme_erreursX, variation_erreurX, erreur_precedenteX;
-int consigneY, erreurY, somme_erreursY, variation_erreurY, erreur_precedenteY;
-int consigneZ, erreurZ, somme_erreursZ, variation_erreurZ, erreur_precedenteZ;
-
 // Specify sensor full scale
 int Gscale = GFS_250DPS;
 int Ascale = AFS_2G;
 float aRes, gRes; // scale resolutions per LSB for the sensors
 
 // Pin definitions
-int intPin = 12;  // These can be changed, 2 and 3 are the Arduinos ext int pins
-#define blinkPin 13  // Blink LED on Teensy or Pro Mini when updating
-boolean blinkOn = false;
+#define intPin 2
 
+// Data acquisition
 int16_t accelCount[3];  // Stores the 16-bit signed accelerometer sensor output
 float ax, ay, az;       // Stores the real accel value in g's
 int16_t gyroCount[3];   // Stores the 16-bit signed gyro sensor output
@@ -196,7 +90,12 @@ int16_t tempCount;   // Stores the real internal chip temperature in degrees Cel
 float temperature;
 float SelfTest[6];
 
-// parameters for 6 DoF sensor fusion calculations
+// PID calculation
+int consigneX, erreurX, somme_erreursX, variation_erreurX, erreur_precedenteX;
+int consigneY, erreurY, somme_erreursY, variation_erreurY, erreur_precedenteY;
+int consigneZ, erreurZ, somme_erreursZ, variation_erreurZ, erreur_precedenteZ;
+
+// Parameters for 6 DoF sensor fusion calculations
 float GyroMeasError = PI * (40.0f / 180.0f);     // gyroscope measurement error in rads/s (start at 60 deg/s), then reduce after ~10 s to 3
 float beta = sqrt(3.0f / 4.0f) * GyroMeasError;  // compute beta
 float GyroMeasDrift = PI * (2.0f / 180.0f);      // gyroscope measurement drift in rad/s/s (start at 0.0 deg/s/s)
@@ -213,6 +112,7 @@ Servo servo_Y;
 Servo servo_Z;
 
 int initialisation = 1;
+int dataReady = 0;
 
 void setup()
 {
@@ -223,6 +123,8 @@ void setup()
     somme_erreursX = (int(offsetX) << 7) / Ki_X;
     somme_erreursY = (int(offsetY) << 7) / Ki_Y;
     somme_erreursZ = (int(offsetZ) << 7) / Ki_Z;
+
+    attachInterrupt(digitalPinToInterrupt(intPin), dataFromIMU, CHANGE);
     
     servo_X.attach(3); // horizontal - roll
     servo_Y.attach(6); // vertical - pitch
@@ -249,10 +151,14 @@ void setup()
     }
 }
 
+void dataFromIMU() {
+  dataReady = 1;
+}
+
 void loop()
 {
     // If data ready bit set, all data registers have new data
-    if(readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01) {  // check if data ready interrupt
+    if ( (readByte(MPU6050_ADDRESS, INT_STATUS) & 0x01) && dataReady == 1) {  // check if data ready interrupt
         readAccelData(accelCount);  // Read the x/y/z adc values
         getAres();
         
@@ -269,6 +175,7 @@ void loop()
         gy = (float)gyroCount[1] * gRes;
         gz = (float)gyroCount[2] * gRes;
 
+        dataReady = 0;
     }
     
     Now = micros();
@@ -298,7 +205,6 @@ void loop()
     }
     
 }
-
 
 void updatePO() {
 
@@ -383,7 +289,7 @@ void getAres() {
 void readAccelData(int16_t * destination)
 {
     uint8_t rawData[6];  // x/y/z accel register data stored here
-    readBytes(MPU6050_ADDRESS, ACCEL_XOUT_H, 6, &rawData[0]);  // Read the six raw data registers into data array
+    readBytes(MPU6050_ADDRESS, ACCEL_XOUT_H, 6, &rawData[0]);     // Read the six raw data registers sequentially into data array
     destination[0] = (int16_t)((rawData[0] << 8) | rawData[1]) ;  // Turn the MSB and LSB into a signed 16-bit value
     destination[1] = (int16_t)((rawData[2] << 8) | rawData[3]) ;
     destination[2] = (int16_t)((rawData[4] << 8) | rawData[5]) ;
@@ -392,7 +298,7 @@ void readAccelData(int16_t * destination)
 void readGyroData(int16_t * destination)
 {
     uint8_t rawData[6];  // x/y/z gyro register data stored here
-    readBytes(MPU6050_ADDRESS, GYRO_XOUT_H, 6, &rawData[0]);  // Read the six raw data registers sequentially into data array
+    readBytes(MPU6050_ADDRESS, GYRO_XOUT_H, 6, &rawData[0]);      // Read the six raw data registers sequentially into data array
     destination[0] = (int16_t)((rawData[0] << 8) | rawData[1]) ;  // Turn the MSB and LSB into a signed 16-bit value
     destination[1] = (int16_t)((rawData[2] << 8) | rawData[3]) ;
     destination[2] = (int16_t)((rawData[4] << 8) | rawData[5]) ;
@@ -400,9 +306,9 @@ void readGyroData(int16_t * destination)
 
 int16_t readTempData()
 {
-    uint8_t rawData[2];  // x/y/z gyro register data stored here
+    uint8_t rawData[2];
     readBytes(MPU6050_ADDRESS, TEMP_OUT_H, 2, &rawData[0]);  // Read the two raw data registers sequentially into data array
-    return ((int16_t)rawData[0]) << 8 | rawData[1] ;  // Turn the MSB and LSB into a 16-bit value
+    return ((int16_t)rawData[0]) << 8 | rawData[1] ;         // Turn the MSB and LSB into a 16-bit value
 }
 
 void initMPU6050()
@@ -471,13 +377,13 @@ void calibrateMPU6050(float * dest1, float * dest2)
     delay(15);
     
     // Configure MPU6050 gyro and accelerometer for bias calculation
-    writeByte(MPU6050_ADDRESS, CONFIG, 0x01);      // Set low-pass filter to 188 Hz
-    writeByte(MPU6050_ADDRESS, SMPLRT_DIV, 0x00);  // Set sample rate to 1 kHz
+    writeByte(MPU6050_ADDRESS, CONFIG, 0x01);       // Set low-pass filter to 188 Hz
+    writeByte(MPU6050_ADDRESS, SMPLRT_DIV, 0x00);   // Set sample rate to 1 kHz
     writeByte(MPU6050_ADDRESS, GYRO_CONFIG, 0x00);  // Set gyro full-scale to 250 degrees per second, maximum sensitivity
     writeByte(MPU6050_ADDRESS, ACCEL_CONFIG, 0x00); // Set accelerometer full-scale to 2 g, maximum sensitivity
     
-    uint16_t  gyrosensitivity  = 131;   // = 131 LSB/degrees/sec
-    uint16_t  accelsensitivity = 16384;  // = 16384 LSB/g
+    uint16_t  gyrosensitivity  = 131;     // = 131 LSB/degrees/sec
+    uint16_t  accelsensitivity = 16384;   // = 16384 LSB/g
     
     // Configure FIFO to capture accelerometer and gyro data for bias calculation
     writeByte(MPU6050_ADDRESS, USER_CTRL, 0x40);   // Enable FIFO
@@ -640,7 +546,7 @@ uint8_t readByte(uint8_t address, uint8_t subAddress)
 {
     uint8_t data; // `data` will store the register data
     Wire.beginTransmission(address);         // Initialize the Tx buffer
-    Wire.write(subAddress);	                 // Put slave register address in Tx buffer
+    Wire.write(subAddress);                   // Put slave register address in Tx buffer
     Wire.endTransmission(false);             // Send the Tx buffer, but send a restart to keep connection alive
     Wire.requestFrom(address, (uint8_t) 1);  // Read one byte from slave register address
     data = Wire.read();                      // Fill Rx buffer with result
@@ -745,3 +651,4 @@ void MadgwickQuaternionUpdate(float ax, float ay, float az, float gx, float gy, 
     q[2] = q3 * norm;
     q[3] = q4 * norm;
 }
+
