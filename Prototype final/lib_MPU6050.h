@@ -1,4 +1,5 @@
 #import <Arduino.h>
+#include "lib_i2c"
 
 #ifdef __cplusplus
 extern "C" {

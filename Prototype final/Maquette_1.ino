@@ -2,7 +2,7 @@
 
 #include "lib_MPU6050.h"
 #include "lib_madgwick.h"
-#include "lib_i2c.h"
+
 #include <Servo.h>
 #include <Wire.h>
 
