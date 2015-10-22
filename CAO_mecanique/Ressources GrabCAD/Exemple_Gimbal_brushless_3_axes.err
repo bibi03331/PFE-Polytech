@@ -1,0 +1,47 @@
+
+
+
+          SolidWorks Corporation - STEP Processor Error Log
+          ______________________________________________________
+
+                       STEP Post Processor
+                       ___________________
+
+
+STEP File Name: Z:\Conception mécanique\Ressources GrabCAD\Exemple_Gimbal_brushless_3_axes.stp
+
+
+Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.Reversing curve, low: 1, high: 1
+Bad Curve, low: -1, high: -1
+Reversing curve, low: 1, high: 1
+Bad Curve, low: -1, high: -1
+Reversing curve, low: 1, high: 0.863984
+XLTR: Circuit sanity failure
+ATTENTION: Surface problem...Trimmed surface constructor could not converge to solution.
+XLTR: Circuit sanity failure
+Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.
+Error: Ne peut pas créer de volume à partir de surfaces ajustées.
+STEP: entrée n'a pas été terminée correctement.
+Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.XLTR: Circuit sanity failure
+Les surfaces ont été correctement transformées en un corps volumique.
+STEP: entrée terminée.
+Error: Ne peut pas créer de volume à partir de surfaces ajustées.
+STEP: entrée n'a pas été terminée correctement.
