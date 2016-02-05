@@ -25,7 +25,7 @@
 #define MADGWICK_FREQUENCY      1000
 
 /* Moteurs brushless avec 7 trinomes d'enroulement electrique */
-#define NB_ELEC_BLOCS   7
+#define NB_ELEC_BLOCS           7
 
 #define ENABLE_ROLL_AXIS    ((const char *)"en_roll_axis")
 #define ENABLE_PITCH_AXIS   ((const char *)"en_pitch_axis")
