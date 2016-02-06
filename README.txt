@@ -25,7 +25,6 @@ livrables du projet.
   codes sources mis à sa disposition dans le répertoire
   "Developpement" ainsi qu'un guide développeur.
 
-
 -------------------------------------------------------------
 ==> Dossier "Developpement"
     Contient le programme du projet ainsi que l'ensemble des
@@ -70,4 +69,16 @@ livrables du projet.
 =====> Dossier "PDF"
        Contient le schéma de principe et les différentes
        couches du Typon
+-------------------------------------------------------------
+
+-------------------------------------------------------------
+  ==> Dossier "Photos"
+      Contient les photos réalisées au cours de la
+      réalisation du projet
+-------------------------------------------------------------
+
+-------------------------------------------------------------
+  ==> Dossier "Datasheets"
+      Contient les datasheets des composants électroniques
+      utilisés pour la partie électronique.
 -------------------------------------------------------------
