@@ -41,7 +41,10 @@ livrables du projet.
        Contient les programmes Arduino mis en oeuvre pour
        la validation de chaque fonction tout au long du
        projet (Prototype initial et final). Ce dossier
-       contient également la version finale du code.
+       contient également la version finale du code et le
+       répertoire pour la cross-compilation.
+       Lien pour la mise en place de l'environnement de
+       développement :https://www.pjrc.com/teensy/gcc.html
 -------------------------------------------------------------
 
 -------------------------------------------------------------
